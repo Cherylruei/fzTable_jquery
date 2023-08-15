@@ -49,16 +49,18 @@ blockquote, q {
 /* =============================== */
 
 .container {
-  width: 100%;
+  width: 95%;
 }
 
 .frzTable {
   display: flex;
+  width: 100%;
+  overflow-x: auto;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   text-align: center;
-  border: 1px solid gray;
+  border: 1px solid lightgray;
   margin: 1rem 2rem;
 }
 
@@ -67,24 +69,25 @@ blockquote, q {
     	
 }
 .column:not(:last-child){
-	border-right: 1px solid gray ;
+	border-right: 1px solid  lightgray;
 }
 
 .td {
+	position: relative;
 	width: 100%;
 	height: 50px;
-	color: rgb(102, 99, 99);
+	color: rgb(151, 153, 156);
 }
 .td:not(.direction) {
 	line-height: 50px;
 }
 
 .td:not(:last-child){
-	border-bottom: 1px solid gray;
+	border-bottom: 1px solid lightgray;
 }
 
 .title {
-  background-color: lightgray;
+  background-color: rgb(232, 230, 230);
   font-weight: 600;
 }
 
@@ -103,3 +106,14 @@ blockquote, q {
   text-align: left;
   padding: 0.3rem;
 }
+
+
+.td.next::after{
+	content: "2018";
+	position: absolute;
+	font-size: 14px;
+	color: rgb(108, 108, 250);
+    top: -15px;
+    right: 30px;
+}
+
