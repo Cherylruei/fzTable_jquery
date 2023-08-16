@@ -1,49 +1,105 @@
 /* reset css */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, font, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	outline: 0;
-	font-weight: inherit;
-	font-style: inherit;
-	font-size: 100%;
-	font-family: inherit;
-	vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+font,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+item {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
 }
 /* remember to define focus styles! */
 :focus {
-	outline: 0;
+  outline: 0;
 }
 body {
-	line-height: 1;
-	color: black;
-	background: white;
+  line-height: 1;
+  color: black;
+  background: white;
 }
-ol, ul {
-	list-style: none;
+ol,
+ul {
+  list-style: none;
 }
 /* tables still need 'cellspacing="0"' in the markup */
 table {
-	border-collapse: separate;
-	border-spacing: 0;
+  border-collapse: separate;
+  border-spacing: 0;
 }
-caption, th, td {
-	text-align: left;
-	font-weight: normal;
+caption,
+th,
+item {
+  text-align: left;
+  font-weight: normal;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: "";
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
 }
-blockquote, q {
-	quotes: "" "";
+blockquote,
+q {
+  quotes: "" "";
 }
 
 /* =============================== */
@@ -52,10 +108,16 @@ blockquote, q {
   width: 95%;
 }
 
+h2 {
+  margin: 1rem 2.5rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
 .frzTable {
   display: flex;
   width: 100%;
-  overflow-x: auto;
+  overflow-x: scroll;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
@@ -65,36 +127,40 @@ blockquote, q {
 }
 
 .column {
-    width: 100%;
-    	
+  width: 100%;
 }
-.column:not(:last-child){
-	border-right: 1px solid  lightgray;
+.column:not(:last-child) {
+  border-right: 1px solid lightgray;
 }
-
-.td {
-	position: relative;
-	width: 100%;
-	height: 50px;
-	color: rgb(151, 153, 156);
-}
-.td:not(.direction) {
-	line-height: 50px;
+.column .header{
+  position: sticky;
+  z-index: 2;
 }
 
-.td:not(:last-child){
-	border-bottom: 1px solid lightgray;
+.item, .title, .header {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  color: rgb(151, 153, 156);
+}
+.header:not(.direction), .item, .title{
+  line-height: 50px;
 }
 
-.title {
-  background-color: rgb(232, 230, 230);
+.item:not(:last-child), .title:not(:last-child), .header:not(:last-child) {
+  border-bottom: 1px solid lightgray;
+}
+
+.title, .header {
+  background-color:  #eaeef4;
   font-weight: 600;
+
 }
 
 .direction {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .oneWay {
@@ -107,13 +173,51 @@ blockquote, q {
   padding: 0.3rem;
 }
 
-
-.td.next::after{
-	content: "2018";
-	position: absolute;
-	font-size: 14px;
-	color: rgb(108, 108, 250);
-    top: -15px;
-    right: 30px;
+.item {
+  position: relative;
+  font-size: 14px;
+  cursor: pointer;
 }
 
+.title.next::after, .header.next::after {
+  content: "2018";
+  position: absolute;
+  font-size: 14px;
+  color: rgb(108, 108, 250);
+  top: -16px;
+  right: 20 px;
+}
+
+.choose {
+  background-color:  #fefae4
+}
+
+.lowestPrice::before {
+  position: absolute;
+  content: " ";
+  width: 0px;
+  height: 0px;
+  top: 0px;
+  left: 0px;
+  border: 10px solid transparent;
+  border-left-color: orange;
+  border-top-color: orange;
+}
+
+.lowestPrice::after {
+  position: absolute;
+  content: "最便宜";
+  font-size: 8%;
+  top: -15px;
+  left: 20px;
+  color: orange ;
+}
+
+.side {
+  background-color: #fafafc
+}
+
+.amount {
+  color: rgb(107, 95, 95); 
+  font-weight: 600;
+}
