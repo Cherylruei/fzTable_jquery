@@ -104,42 +104,40 @@ q {
 
 /* =============================== */
 
+
 .container {
-  width: 95%;
+  margin: 0 auto;
 }
 
 h2 {
-  margin: 1rem 2.5rem;
-  font-size: 1.5rem;
+  margin: 16px 32px;
+  text-align: start;
+  font-size: 30px;
   font-weight: 800;
 }
 
 .frzTable {
   display: flex;
-  width: 100%;
-  overflow-x: scroll;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  width: 780px;
   text-align: center;
-  border: 1px solid lightgray;
-  margin: 1rem 2rem;
+  margin: 16px 32px;
 }
 
 .column {
-  width: 100%;
+  width: 100px;
 }
-.column:not(:last-child) {
-  border-right: 1px solid lightgray;
-}
-.column .header{
+.first-col{
+  width: 80px;
   position: sticky;
   z-index: 2;
+
 }
 
 .item, .title, .header {
   position: relative;
-  width: 100%;
   height: 50px;
   color: rgb(151, 153, 156);
 }
@@ -147,14 +145,22 @@ h2 {
   line-height: 50px;
 }
 
-.item:not(:last-child), .title:not(:last-child), .header:not(:last-child) {
+.item, .title, .header {
   border-bottom: 1px solid lightgray;
+  border-right: 1px solid lightgray;
 }
 
 .title, .header {
   background-color:  #eaeef4;
-  font-weight: 600;
+  font-weight: 600; 
+}
 
+.title, .header:first-child {
+  border-top: 1px solid lightgray;
+}
+
+.header {
+  border-left: 1px solid lightgray;
 }
 
 .direction {
@@ -175,17 +181,18 @@ h2 {
 
 .item {
   position: relative;
+  width:100px;
   font-size: 14px;
   cursor: pointer;
 }
 
-.title.next::after, .header.next::after {
+.title.year::after, .header.year::after {
   content: "2018";
   position: absolute;
   font-size: 14px;
   color: rgb(108, 108, 250);
   top: -16px;
-  right: 20 px;
+  right: 20px;
 }
 
 .choose {
@@ -207,7 +214,7 @@ h2 {
 .lowestPrice::after {
   position: absolute;
   content: "最便宜";
-  font-size: 8%;
+  font-size: 8px;
   top: -15px;
   left: 20px;
   color: orange ;
@@ -220,4 +227,46 @@ h2 {
 .amount {
   color: rgb(107, 95, 95); 
   font-weight: 600;
+}
+
+@media screen and (max-width:430px) {
+
+.h2 {
+  margin: 0.5rem;
+}
+ .frzTable {
+  position: relative;
+  margin: 0.5rem;
+  justify-content: start;
+ }
+
+ .next, .previous {
+  position: absolute;
+  top: 50%;
+  width: 1.2rem;
+  height: 2.5rem;
+  border-radius: 2px;
+  background-color: rgba(236, 233, 233, 0.868);
+  z-index:5;
+ }
+
+ .next {
+  left: 8.5%;
+ }
+
+ .previous{
+   left: 25.2rem;
+ }
+
+ .next::before {
+  position: relative;
+  content: "<";
+  color: #ffffff;
+  font-size: 16px;
+  font-family: sans-serif;
+  z-index: 10;
+  top: 30%;
+ }
+
+
 }
