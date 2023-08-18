@@ -1,4 +1,5 @@
 $(".frzTable.default").frzTable({
+  mode: "default",
   count: {
     // M版時每次點擊往前往後移動幾格儲存格
     slide: 1, // [number]
@@ -12,7 +13,6 @@ $(".frzTable.default").frzTable({
     $(".side").removeClass("side");
     if ($element.hasClass("choose")) {
       $element.removeClass("choose");
-      return;
     } else {
       $(".choose").removeClass("choose");
       $element.addClass("choose");
@@ -25,6 +25,7 @@ $(".frzTable.default").frzTable({
   },
 });
 $(".frzTable.rel").frzTable({
+  mode: "rel",
   count: {
     slide: 1,
     show: 2,

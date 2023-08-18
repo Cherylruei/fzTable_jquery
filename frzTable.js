@@ -1,15 +1,20 @@
 (function ($) {
-  function adjustColumns() {
+  // 宣告全局變數
+
+  const tableConfigs = [];
+  // console.log($(".frzTable.default").children(".column"));
+  function adjustColumns(count, columns, length) {
     const screenWidth = $(window).width();
-    const $table = $(".frzTable");
-    // 抓取 7 個 column 的節點，除了需要出現的4個 column 其他隱藏
-    const columnsGroup = document.getElementsByClassName("column");
+    const showCol = count.show;
+    const slideCol = count.slide;
 
     if (screenWidth <= 425) {
-      $(columnsGroup).slice(0, 4).show();
-      $(columnsGroup).slice(4, 8).hide();
+      $(columns).slice(0, showCol).show();
+      $(columns)
+        .slice(showCol, length + 1)
+        .hide();
     } else {
-      $(columnsGroup).show();
+      $(columns).show();
     }
   }
   function whenClick() {
@@ -19,7 +24,8 @@
   $.fn.frzTable = function (options) {
     const settings = $.extend(
       {
-        count: adjustColumns(1, 4),
+        // 此為預設參數: usage 的參數透過 options 覆蓋掉
+        count: { slide: 1, show: 3 },
         speed: 0.3,
         whenClick: whenClick,
       },
@@ -27,13 +33,36 @@
       options
     );
 
-    adjustColumns();
-    $(window).on("resize", adjustColumns);
+    $(window).on("resize", function () {
+      // const $this = $(this); // 使用此方法創建全局變數
+      const mode = settings.mode;
+      checkWindowWidth(mode, settings);
+    });
+
+    function checkWindowWidth($element, settings) {
+      // 抓取(default) 7 個 column 的節點，除了需要出現的4個 column 其他隱藏
+      const defaultColumns = $(".frzTable.default").children(".column");
+      const defaultLength = defaultColumns.length; // 抓出節點的長度
+      // 抓取(rel) 的節點和長度
+
+      $(".frzTable").each(function () {
+        const $table = $(this);
+        if ($table.hasClass("default")) {
+          const count = tableConfigs[0].count;
+          adjustColumns(count, defaultColumns, defaultLength);
+        } else if ($table.hasClass("rel")) {
+          const count = tableConfigs[1].count;
+          adjustColumns(count);
+        }
+      });
+    }
 
     return this.each(function () {
+      // 抓 options [0]: default, [1]: rel
+      tableConfigs.push(options);
+
       // 將目前處理的 .frzTable 元素（即插件套用的元素）轉換成 jQuery 物件
       const $table = $(this);
-      const count = settings.count;
       const speed = settings.speed;
       const whenClick = settings.whenClick;
 
