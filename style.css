@@ -95,17 +95,18 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
 }
 blockquote,
 q {
-  quotes: "" "";
+  quotes: '' '';
 }
 
 /* =============================== */
 
-
 .container {
+  height: 100vh;
+  overflow-x: auto;
   margin: 0 auto;
 }
 
@@ -119,7 +120,7 @@ h2 {
 .frzTable {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   width: 780px;
   text-align: center;
@@ -129,33 +130,70 @@ h2 {
 .column {
   width: 100px;
 }
-.first-col{
+
+.rel .column {
+  width: 136px;
+}
+
+.first-col {
   width: 80px;
   position: sticky;
   z-index: 2;
-
 }
 
-.item, .title, .header {
+.rel .first-col {
+  width: 100px;
+}
+
+.item,
+.title,
+.header {
   position: relative;
   height: 50px;
   color: rgb(151, 153, 156);
 }
-.header:not(.direction), .item, .title{
+.header:not(.direction),
+.item,
+.title {
   line-height: 50px;
 }
 
-.item, .title, .header {
+.item,
+.title,
+.header {
   border-bottom: 1px solid lightgray;
   border-right: 1px solid lightgray;
 }
 
-.title, .header {
-  background-color:  #eaeef4;
-  font-weight: 600; 
+.title,
+.header {
+  background-color: #eaeef4;
+  font-weight: 600;
+  font-size: 14px;
 }
 
-.title, .header:first-child {
+.rel .title,
+.rel .header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  line-height: unset;
+  padding-left: 5px;
+}
+
+.rel .title .abbreviation,
+.rel .title .abbreviation {
+  font-size: 16px;
+}
+
+.rel .title .airport,
+.rel .header .airport {
+  font-size: 12px;
+}
+
+.title,
+.header:first-child {
   border-top: 1px solid lightgray;
 }
 
@@ -170,6 +208,7 @@ h2 {
 }
 
 .rel .direction {
+  align-items: stretch;
   font-size: 12px;
 }
 
@@ -189,8 +228,22 @@ h2 {
   cursor: pointer;
 }
 
-.title.year::after, .header.year::after {
-  content: "2018";
+.rel .item {
+  display: flex;
+  line-height: initial;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 12px;
+}
+
+.airline {
+  color: rgb(107, 95, 95);
+}
+
+.title.year::after,
+.header.year::after {
+  content: '2018';
   position: absolute;
   font-size: 14px;
   color: rgb(108, 108, 250);
@@ -199,78 +252,100 @@ h2 {
 }
 
 .choose {
-  background-color:  #fefae4;
+  background-color: #fefae4;
   border: 1px solid salmon;
 }
 
 .lowestPrice::before {
   position: absolute;
-  content: " ";
+  content: ' ';
   width: 0px;
   height: 0px;
   top: 0px;
   left: 0px;
-  border: 10px solid transparent;
+  border: 8px solid transparent;
   border-left-color: orange;
   border-top-color: orange;
 }
 
 .lowestPrice::after {
   position: absolute;
-  content: "最便宜";
+  content: '最便宜';
   font-size: 8px;
   top: -15px;
   left: 20px;
-  color: orange ;
+  color: orange;
+}
+
+.rel .lowestPrice {
+  justify-content: flex-end;
+}
+
+.rel .lowestPrice::after {
+  top: 0px;
+  left: 20px;
 }
 
 .side {
-  background-color: #fafafc
+  background-color: #fafafc;
 }
 
 .amount {
-  color: rgb(107, 95, 95); 
+  color: rgb(107, 95, 95);
   font-weight: 600;
 }
 
-@media screen and (max-width:430px) {
-
-.h2 {
-  margin: 0.5rem;
+.listed {
+  position: relative;
+  color: rgb(243, 97, 35);
 }
- .frzTable {
-  position: relative;
-  margin: 0.5rem;
-  justify-content: start;
- }
 
- .next, .previous {
+.listed::before {
+  content: '';
   position: absolute;
-  top: 50%;
-  width: 1.2rem;
-  height: 2.5rem;
-  border-radius: 2px;
-  background-color: rgba(236, 233, 233, 0.868);
-  z-index:5;
- }
+  top: 10px;
+  right: 10px;
+  background-color: rgb(243, 97, 35);
+  width: 5px;
+  height: 5px;
+}
 
- .next {
-  left: 8.5%;
- }
+@media screen and (max-width: 430px) {
+  .h2 {
+    margin: 0.5rem;
+  }
+  .frzTable {
+    position: relative;
+    margin: 0.5rem;
+    justify-content: start;
+  }
 
- .previous{
-   left: 25.2rem;
- }
+  .next,
+  .previous {
+    position: absolute;
+    top: 50%;
+    width: 1.2rem;
+    height: 2.5rem;
+    border-radius: 2px;
+    background-color: rgba(236, 233, 233, 0.868);
+    z-index: 5;
+  }
 
- .next::before {
-  position: relative;
-  content: "<";
-  color: #ffffff;
-  font-size: 16px;
-  font-family: sans-serif;
-  z-index: 10;
-  top: 30%;
- }
+  .next {
+    left: 8.5%;
+  }
 
+  .previous {
+    left: 25.2rem;
+  }
 
+  .next::before {
+    position: relative;
+    content: '<';
+    color: #ffffff;
+    font-size: 16px;
+    font-family: sans-serif;
+    z-index: 10;
+    top: 30%;
+  }
 }

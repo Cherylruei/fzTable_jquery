@@ -18,7 +18,7 @@
     }
   }
   function whenClick() {
-    console.log("click");
+    console.log('click');
   }
 
   $.fn.frzTable = function (options) {
@@ -33,7 +33,7 @@
       options
     );
 
-    $(window).on("resize", function () {
+    $(window).on('resize', function () {
       // const $this = $(this); // 使用此方法創建全局變數
       const mode = settings.mode;
       checkWindowWidth(mode, settings);
@@ -41,18 +41,22 @@
 
     function checkWindowWidth($element, settings) {
       // 抓取(default) 7 個 column 的節點，除了需要出現的4個 column 其他隱藏
-      const defaultColumns = $(".frzTable.default").children(".column");
+      const defaultColumns = $('.frzTable.default').children('.column');
       const defaultLength = defaultColumns.length; // 抓出節點的長度
       // 抓取(rel) 的節點和長度
+      const relColumns = $('.frzTable.rel').children('.column');
+      const relLength = relColumns.length;
+      console.log(relColumns);
+      console.log(relLength);
 
-      $(".frzTable").each(function () {
+      $('.frzTable').each(function () {
         const $table = $(this);
-        if ($table.hasClass("default")) {
+        if ($table.hasClass('default')) {
           const count = tableConfigs[0].count;
           adjustColumns(count, defaultColumns, defaultLength);
-        } else if ($table.hasClass("rel")) {
+        } else if ($table.hasClass('rel')) {
           const count = tableConfigs[1].count;
-          adjustColumns(count);
+          adjustColumns(count, relColumns, relLength);
         }
       });
     }
@@ -67,7 +71,7 @@
       const whenClick = settings.whenClick;
 
       // 其他插件的邏輯
-      $table.find(".item").click(function () {
+      $table.find('.item').click(function () {
         whenClick($(this)); // 呼叫 whenClick 函數
       });
     });
