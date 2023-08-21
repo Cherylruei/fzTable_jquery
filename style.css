@@ -111,7 +111,7 @@ q {
 }
 
 h2 {
-  margin: 16px 32px;
+  margin: 16px;
   text-align: start;
   font-size: 30px;
   font-weight: 800;
@@ -122,9 +122,14 @@ h2 {
   flex-direction: row;
   justify-content: start;
   align-items: center;
-  width: 780px;
+  width: 1000px;
   text-align: center;
-  margin: 16px 32px;
+  margin: 16px;
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
 }
 
 .column {
@@ -136,13 +141,14 @@ h2 {
 }
 
 .first-col {
-  width: 80px;
+  min-width: 80px;
   position: sticky;
+  top: 0;
   z-index: 2;
 }
 
 .rel .first-col {
-  width: 100px;
+  min-width: 100px;
 }
 
 .item,
@@ -311,7 +317,6 @@ h2 {
 }
 
 @media screen and (max-width: 430px) {
- 
   .frzTable {
     position: relative;
     justify-content: start;
@@ -334,7 +339,7 @@ h2 {
   }
 
   .next {
-    left: 362px;
+    left: 39.3%;
   }
 
   .previous::before {
@@ -344,9 +349,9 @@ h2 {
     font-size: 16px;
     font-family: sans-serif;
     z-index: 10;
-    top: 30%;
+    top: 25%;
   }
-  
+
   .next::before {
     position: relative;
     content: '>';
@@ -354,7 +359,7 @@ h2 {
     font-size: 16px;
     font-family: sans-serif;
     z-index: 10;
-    top: 30%;
+    top: 25%;
   }
 
   .rel .previous {
@@ -362,7 +367,6 @@ h2 {
   }
 
   .rel .next {
-    left: 354px;
+    left: 39.3%;
   }
-
 }
