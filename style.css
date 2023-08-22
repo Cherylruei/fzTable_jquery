@@ -106,7 +106,7 @@ q {
 
 .container {
   height: 100vh;
-  overflow-x: auto;
+  overflow-x: hidden;
   margin: 0 auto;
 }
 
@@ -125,11 +125,12 @@ h2 {
   width: 1000px;
   text-align: center;
   margin: 16px;
-  overflow: hidden;
 }
 
 .content {
   display: flex;
+  position: relative;
+
 }
 
 .column {
@@ -143,8 +144,9 @@ h2 {
 .first-col {
   min-width: 80px;
   position: sticky;
-  top: 0;
+  left: 0;
   z-index: 2;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
 .rel .first-col {
@@ -316,10 +318,13 @@ h2 {
   font-size: 8px;
 }
 
+
 @media screen and (max-width: 430px) {
   .frzTable {
+    width: 430px;
     position: relative;
     justify-content: start;
+    overflow: hidden;
   }
 
   .previous,
@@ -339,7 +344,7 @@ h2 {
   }
 
   .next {
-    left: 39.3%;
+    right: 20px;
   }
 
   .previous::before {
@@ -367,6 +372,6 @@ h2 {
   }
 
   .rel .next {
-    left: 39.3%;
+    right: 20px;
   }
 }
