@@ -14,125 +14,134 @@
 
     // whenClick 點擊效果 (options 的 whenClick 會覆蓋原有設定)
     function whenClick() {
-      console.log('click');
+      $element.addClass('choose');
     }
-    
-    $(window).on('resize', function () {
-      if($(window).width() < 430){
-        checkWidth();
-      } else {
-        // console.log($(window).width()) 大於430 恢復本來的寬度
-        $(".default .column").width(100);
-        $(".rel .column").width(136);
-      }
 
-    });
-
-  
-
+    // 計算表格滾動的位置
     let defaulPosition = 0;
     let relPosition = 0;
-    $(".previous.default").hide()
- 
-    $('.next.default').on('click', function () {
-      // 我不能在點擊的時候才加一，他加完以後成為一，還是這一回合被認為成 0
-      const setting = tableConfigs["default"]
-      slideColumns(setting, "+=")
-      defaulPosition++
-    });
-    
-    $('.previous.default').on('click', function () {
-      const setting = tableConfigs["default"]
-      slideColumns(setting, "-=")
-      defaulPosition--
+
+    $(window).on(
+      'resize',
+      debounce(function () {
+        if ($(window).width() < 430) {
+          checkWidth();
+        } else {
+          // 大於430 恢復本來的寬度
+          $('.default .column').width(100);
+          $('.rel .column').width(136);
+          defaulPosition = 0;
+          relPosition = 0;
+        }
+      }, 300)
+    );
+
+    $(function () {
+      if ($(window).width() < 430) {
+        checkWidth();
+        $('.previous.default').hide();
+        $('.previous.rel').hide();
+      } else {
+        $('.default .column').width(100);
+        $('.rel .column').width(136);
+      }
     });
 
-     
-    $('.next.rel').on('click', function () {
-      const setting = tableConfigs["rel"]
-      slideColumns(setting, "+=")
-      relPosition++
-    });
-    
-    $('.previous.rel').on('click', function () {
-      const setting = tableConfigs["rel"]
-      slideColumns(setting, "-=")
-      relPosition--
-    });
+    $(function () {
+      const defaultSetting = tableConfigs['default'];
+      const relSetting = tableConfigs['rel'];
+      $('.next.default').on('click', function () {
+        defaulPosition++;
+        slideColumns(defaultSetting, '+=');
+      });
+      $('.previous.default').on('click', function () {
+        if (defaulPosition == 0) {
+          return;
+        }
+        defaulPosition--;
+        slideColumns(defaultSetting, '-=');
+      });
+      $('.next.rel').on('click', function () {
+        relPosition++;
+        slideColumns(relSetting, '+=');
+      });
 
+      $('.previous.rel').on('click', function () {
+        relPosition--;
+        slideColumns(relSetting, '-=');
+      });
+    });
 
     const $table = $(this);
     const type = $table.hasClass('default') ? 'default' : 'rel';
     // 將不同 options config 存入 tableConfigs'
     tableConfigs[type] = options;
-   
-  
-
 
     function checkWidth() {
-      $('.content').css({position:'relative', right: 0})
-        const tableColumns = {};
-        const tableLengths = {};
-        const type = $table.hasClass('default') ? 'default' : 'rel';
-        const typeColumns = $table.children('.content').children('.column');
-        tableColumns[type] = typeColumns;
-        tableLengths[type] = typeColumns.length;
-         
-        if ($table.hasClass('default')) {
-          const defaultSettings = tableConfigs[type];
-          adjustColumns(defaultSettings.count, tableColumns[type]);
+      $('.content').css({ position: 'relative', right: 0 });
+      const tableColumns = {};
+      const tableLengths = {};
+      const type = $table.hasClass('default') ? 'default' : 'rel';
+      const typeColumns = $table.children('.content').children('.column');
+      tableColumns[type] = typeColumns;
+      tableLengths[type] = typeColumns.length;
 
-        } else if ($table.hasClass('rel')) {
-          const relSettings = tableConfigs[type];
-          adjustColumns(relSettings.count, tableColumns[type]);
-        }
+      if ($table.hasClass('default')) {
+        const defaultSettings = tableConfigs[type];
+        adjustColumns(defaultSettings.count, tableColumns[type]);
+      } else if ($table.hasClass('rel')) {
+        const relSettings = tableConfigs[type];
+        adjustColumns(relSettings.count, tableColumns[type]);
+      }
     }
 
- 
-
-
     function slideColumns(setting, direction) {
-
-      console.log(defaulPosition)
-      console.log(relPosition)
-    // 現在螢幕寬度
-    const screenWidth = $(window).width();
-    // first-col width
-    const defaultFirstCol = $('.default .first-col').width();
-    const relFirstCol = $('.rel .first-col').width();
-    // console.log(relFirstCol)
-    const mode = setting.mode
-    const speed = setting.speed
+      // 現在螢幕寬度
+      const screenWidth = $(window).width();
+      // first-col width
+      const defaultFirstCol = $('.default .first-col').width();
+      const relFirstCol = $('.rel .first-col').width();
+      const mode = setting.mode;
+      const speed = setting.speed;
       // slide 一格 (default/rel 的寬度不同)
       // 需要顯示的欄位數量
       const showCol = setting.count.show;
       const slide = setting.count.slide;
       // (螢幕寬度-首欄-left margin)/顯示欄位數=現在每一欄位的寬度 - border
-      const defaultDistance = (((screenWidth - defaultFirstCol) / showCol/2) -1)*slide
-      const relDistance = (((screenWidth - relFirstCol) / showCol/2))*slide
-      // console.log(defaultDistance)
-      // console.log(relDistance)
-      if(mode === "default"){
+      const defaultDistance =
+        ((screenWidth - defaultFirstCol) / showCol / 2 - 1) * slide;
+      const relDistance = ((screenWidth - relFirstCol) / showCol / 2) * slide;
+
+      if (mode === 'default') {
         $('.content.default').animate(
-          { "right": `${direction}${defaultDistance}`},
-          {duration: speed*1000,
-           easing: 'linear'   
-          }
-          )
-          if(defaulPosition == 0){
-            console.log("hi")
-            $(".previous.default").hide()
-          } else if (defaulPosition > 0){
-            console.log("hello")
-            $(".previous.default").show()
-          }
-      } else if (mode === "rel"){
+          { right: `${direction}${defaultDistance}` },
+          { duration: speed * 1000, easing: 'linear' }
+        );
+        if (defaulPosition == 0) {
+          $('.previous.default').hide();
+        } else {
+          $('.previous.default').show();
+        }
+        if (defaulPosition == 3) {
+          $('.next.default').hide();
+        } else {
+          $('.next.default').show();
+        }
+      } else if (mode === 'rel') {
         $('.content.rel').animate(
-          { "right": `${direction}${relDistance}`},
-          {duration: speed*1000,
-           easing: 'linear'   
-          }
-        )
+          { right: `${direction}${relDistance}` },
+          { duration: speed * 1000, easing: 'linear' }
+        );
+        if (relPosition == 0) {
+          $('.previous.rel').hide();
+        } else {
+          $('.previous.rel').show();
+        }
+        if (relPosition == 3) {
+          $('.next.rel').hide();
+        } else {
+          $('.next.rel').show();
+        }
       }
     }
 
@@ -162,3 +171,13 @@
     });
   };
 })(jQuery);
+
+function debounce(fn, delay) {
+  let timeoutId;
+  return function (...args) {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => fn(...args), delay);
+  };
+}

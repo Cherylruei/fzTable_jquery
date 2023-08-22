@@ -35,11 +35,11 @@ $('.frzTable.rel').frzTable({
   whenClick: function ($element) {
     // 移除 class 有".listed" 飛機的標記
     $('.listed').removeClass('listed');
-    if ($element.hasClass('choose')) {
-      $element.removeClass('choose');
+    if ($element.hasClass('pick')) {
+      $element.removeClass('pick');
     } else {
-      $('.choose').removeClass('choose');
-      $element.addClass('choose');
+      $('.pick').removeClass('pick');
+      $element.addClass('pick');
       // 增加小飛機被選取的 column
       const header = $element.parent().find('.title');
       header.addClass('listed');

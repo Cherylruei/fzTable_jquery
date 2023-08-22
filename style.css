@@ -130,7 +130,6 @@ h2 {
 .content {
   display: flex;
   position: relative;
-
 }
 
 .column {
@@ -259,7 +258,8 @@ h2 {
   right: 20px;
 }
 
-.choose {
+.choose,
+.pick {
   background-color: #fefae4;
   border: 1px solid salmon;
 }
@@ -317,7 +317,6 @@ h2 {
   color: rgb(243, 97, 35);
   font-size: 8px;
 }
-
 
 @media screen and (max-width: 430px) {
   .frzTable {
