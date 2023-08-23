@@ -38,9 +38,9 @@
 
     $(function () {
       if ($(window).width() < 430) {
-        checkWidth();
         $('.previous.default').hide();
         $('.previous.rel').hide();
+        checkWidth();
       } else {
         $('.default .column').width(100);
         $('.rel .column').width(136);
@@ -113,6 +113,8 @@
       const relDistance = ((screenWidth - relFirstCol) / showCol / 2) * slide;
 
       if (mode === 'default') {
+        const defaultLength = $(".default .column").length
+        const defaultMaxClick = defaultLength - showCol
         $('.content.default').animate(
           { right: `${direction}${defaultDistance}` },
           { duration: speed * 1000, easing: 'linear' }
@@ -122,12 +124,14 @@
         } else {
           $('.previous.default').show();
         }
-        if (defaulPosition == 3) {
+        if (defaulPosition == defaultMaxClick) {
           $('.next.default').hide();
         } else {
           $('.next.default').show();
         }
       } else if (mode === 'rel') {
+        const relLength = $(".rel .column").length
+        const relMaxClick = relLength - showCol
         $('.content.rel').animate(
           { right: `${direction}${relDistance}` },
           { duration: speed * 1000, easing: 'linear' }
@@ -137,7 +141,7 @@
         } else {
           $('.previous.rel').show();
         }
-        if (relPosition == 3) {
+        if (relPosition == relMaxClick) {
           $('.next.rel').hide();
         } else {
           $('.next.rel').show();
