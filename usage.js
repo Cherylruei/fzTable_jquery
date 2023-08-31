@@ -4,7 +4,7 @@ $('.frzTable.default').frzTable({
   mode: 'default',
   count: {
     // M版時每次點擊往前往後移動幾格儲存格
-    slide: 1, // [number]
+    slide: 2, // [number]
     // M版時一個畫面show幾格儲存格
     show: 4, // [number]
   },
@@ -30,7 +30,7 @@ $('.frzTable.rel').frzTable({
   mode: 'rel',
   count: {
     slide: 1,
-    show: 2,
+    show: 3,
   },
   whenClick: function ($element) {
     // 移除 class 有".listed" 飛機的標記
@@ -44,8 +44,16 @@ $('.frzTable.rel').frzTable({
       const header = $element.parent().find('.title');
       header.addClass('listed');
       // 增加小飛機在被選取的 row
-      const clickedOrder = $element.attr('class').split(' ')[1];
-      $('.header.' + clickedOrder).addClass('listed');
+      // 抓到被點擊的 item 是該 column 的哪一排
+      const columns = $('.rel .content .column')
+      columns.on("click", ".item", function(){
+        const items = $(this).closest('.column').find('.item')
+        const index = items.index($(this))
+        const headers = $('.rel .first-col .header').not(".direction")
+       // 在相對應該排的 header 加上 listed
+       $(headers[index]).addClass('listed');
+      })
+
     }
   },
 });

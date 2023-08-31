@@ -1,6 +1,7 @@
 (function ($) {
   const tableConfigs = {};
   $.fn.frzTable = function (options) {
+    const target=$(this)
     const settings = $.extend(
       {
         // 此為預設參數: usage 的參數透過 options 覆蓋掉
@@ -20,14 +21,14 @@
     // 計算表格滾動的位置
     let defaulPosition = 0;
     let relPosition = 0;
-
+  
+    // 每次 resize 都要去算箭頭出現的位置
     $(window).on(
       'resize',
       debounce(function () {
-        if ($(window).width() < 430) {
+        if ($(window).width() < 980) {
           checkWidth();
         } else {
-          // 大於430 恢復本來的寬度
           $('.default .column').width(100);
           $('.rel .column').width(136);
           defaulPosition = 0;
@@ -37,10 +38,8 @@
     );
 
     $(function () {
-      if ($(window).width() < 430) {
-        $('.previous.default').hide();
-        $('.previous.rel').hide();
-        checkWidth();
+      if ($(window).width() < 980) {
+        checkWidth()
       } else {
         $('.default .column').width(100);
         $('.rel .column').width(136);
@@ -50,24 +49,28 @@
     $(function () {
       const defaultSetting = tableConfigs['default'];
       const relSetting = tableConfigs['rel'];
-      $('.next.default').on('click', function () {
-        defaulPosition++;
+      const defaultSlideNum = defaultSetting.count.slide
+      const relSlideNum = relSetting.count.slide
+      $('.default .next').on('click', function () {
+        defaulPosition += defaultSlideNum
+    
         slideColumns(defaultSetting, '+=');
       });
-      $('.previous.default').on('click', function () {
+      $('.default .previous').on('click', function () {
         if (defaulPosition == 0) {
           return;
         }
-        defaulPosition--;
+        defaulPosition-=defaultSlideNum
         slideColumns(defaultSetting, '-=');
       });
-      $('.next.rel').on('click', function () {
-        relPosition++;
+      $('.rel .next').on('click', function () {
+       
+        relPosition+= relSlideNum
         slideColumns(relSetting, '+=');
       });
 
-      $('.previous.rel').on('click', function () {
-        relPosition--;
+      $('.rel .previous').on('click', function () {
+        relPosition-= relSlideNum
         slideColumns(relSetting, '-=');
       });
     });
@@ -78,7 +81,7 @@
     tableConfigs[type] = options;
 
     function checkWidth() {
-      $('.content').css({ position: 'relative', right: 0 });
+      // $('.content').css({ position: 'relative', right: 0 });
       const tableColumns = {};
       const tableLengths = {};
       const type = $table.hasClass('default') ? 'default' : 'rel';
@@ -88,14 +91,15 @@
 
       if ($table.hasClass('default')) {
         const defaultSettings = tableConfigs[type];
-        adjustColumns(defaultSettings.count, tableColumns[type]);
+        adjustColumns(target,defaultSettings.count, tableColumns[type]);
       } else if ($table.hasClass('rel')) {
         const relSettings = tableConfigs[type];
-        adjustColumns(relSettings.count, tableColumns[type]);
+        adjustColumns(target,relSettings.count, tableColumns[type]);
       }
     }
 
     function slideColumns(setting, direction) {
+      // slide columns 要防呆:如果滑的格數，不能有滑超過
       // 現在螢幕寬度
       const screenWidth = $(window).width();
       // first-col width
@@ -107,65 +111,102 @@
       // 需要顯示的欄位數量
       const showCol = setting.count.show;
       const slide = setting.count.slide;
-      // (螢幕寬度-首欄-left margin)/顯示欄位數=現在每一欄位的寬度 - border
-      const defaultDistance =
-        ((screenWidth - defaultFirstCol) / showCol / 2 - 1) * slide;
-      const relDistance = ((screenWidth - relFirstCol) / showCol / 2) * slide;
+      const defaultColWidth = $('.default .column').width()
+      const relColWidth = $('.rel .column').width()
+      const defaultDistance = defaultColWidth/2 * slide;
+      const relDistance = relColWidth/2 * slide;
+    
+      // console.log("relPO", relPosition) 
+      // 如果要把最後一格放在底部，就要確保 showCol 的格數 4 滑動(7-4)沒入3格 defaultPO =3 
+      // 隱藏的格數是 (7-showCol)*defaultColWidth
+     
+      // 直接將 .content(.animate)改成right:整個table的
+      const defaultContentWidth = $('.default .content').width()
 
       if (mode === 'default') {
         const defaultLength = $(".default .column").length
         const defaultMaxClick = defaultLength - showCol
-        $('.content.default').animate(
+        const checkPosition = defaulPosition + showCol + slide
+        // .default 如果 showCol + defaultPosition + slide > 7 
+        // console.log("CheckPosition",checkPosition)
+        $('.default .content').animate(
           { right: `${direction}${defaultDistance}` },
           { duration: speed * 1000, easing: 'linear' }
-        );
+          )
+        // if(checkPosition > 7) {
+        //   $('.default .content').animate(
+        //     { right: `${direction}${(7-showCol)*defaultColWidth/2}` },
+        //     { duration: speed * 1000, easing: 'linear' }
+        //   )
+        // } else {
+        //   $('.default .content').animate(
+        //     { right: `${direction}${defaultDistance}` },
+        //     { duration: speed * 1000, easing: 'linear' }
+        //   );
+        // }
+        // console.log("defaultPO", defaulPosition)
+        // console.log("slide", slide)
+        console.log("relPosition", relPosition)
         if (defaulPosition == 0) {
-          $('.previous.default').hide();
+          $('.default .previous').hide();
         } else {
-          $('.previous.default').show();
+          $('.default .previous').show();
         }
         if (defaulPosition == defaultMaxClick) {
-          $('.next.default').hide();
+          $('.default .next').hide();
         } else {
-          $('.next.default').show();
+          $('.default .next').show();
         }
       } else if (mode === 'rel') {
         const relLength = $(".rel .column").length
         const relMaxClick = relLength - showCol
-        $('.content.rel').animate(
+        $('.rel .content').animate(
           { right: `${direction}${relDistance}` },
           { duration: speed * 1000, easing: 'linear' }
         );
         if (relPosition == 0) {
-          $('.previous.rel').hide();
+          $('.rel .previous').hide();
         } else {
-          $('.previous.rel').show();
+          $('.rel .previous').show();
         }
         if (relPosition == relMaxClick) {
-          $('.next.rel').hide();
+          $('.rel .next').hide();
         } else {
-          $('.next.rel').show();
+          $('.rel .next').show();
         }
       }
     }
 
-    function adjustColumns(count, columns) {
+    function adjustColumns(target,count, columns) {
       // 現在螢幕寬度
+      console.log('target',target)
       const screenWidth = $(window).width();
+      console.log("screenWidth", screenWidth)
       // first-col width
-      const firtsCol = $('.first-col').width();
+      const firtsCol = target.find('.first-col').width();
       // 需要顯示的欄位數量
       const showCol = count.show;
+
+      console.log("firstCol",firtsCol)
       // (螢幕寬度-首欄-left margin)/顯示欄位數=現在每一欄位的寬度
-      const columnWidth = (screenWidth - firtsCol - 16) / showCol;
+      const columnWidth = ((screenWidth - firtsCol - 32) / showCol)
+      const frzTableWidth = firtsCol + columnWidth*showCol
+      $(".frzTable").width(frzTableWidth)
+      console.log('columnWidth', columnWidth)
       $(columns).width(columnWidth);
+      
+      // 按照 adjustColumns 去調整 previous/next 出現的位置
+      $('.frzTable .previous').hide();
+      $('.frzTable .next').css({
+        "left": `${firtsCol + columnWidth * showCol - 18}px`
+      });
+
     }
 
     return this.each(function () {
       // 將目前處理的 .frzTable 元素（即插件套用的元素）轉換成 jQuery 物件
       const $table = $(this);
       // 分別有 default 和 rel table
-      const speed = settings.speed;
       const whenClick = settings.whenClick;
 
       // 其他插件的邏輯

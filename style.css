@@ -108,6 +108,7 @@ q {
   height: 100vh;
   overflow-x: hidden;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 h2 {
@@ -318,12 +319,16 @@ h2 {
   font-size: 8px;
 }
 
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 980px) {
   .frzTable {
-    width: 430px;
+    width: 100%;
     position: relative;
     justify-content: start;
     overflow: hidden;
+  }
+
+  .column {
+    width: calc(100%/7)
   }
 
   .previous,
@@ -343,7 +348,7 @@ h2 {
   }
 
   .next {
-    right: 20px;
+    left: 100px;
   }
 
   .previous::before {
