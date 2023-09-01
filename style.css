@@ -134,11 +134,11 @@ h2 {
 }
 
 .column {
-  width: 100px;
+  width: 120px;
 }
 
 .rel .column {
-  width: 136px;
+  width: 165px;
 }
 
 .first-col {
@@ -344,6 +344,7 @@ h2 {
   }
 
   .previous {
+    display: none;
     left: 80px;
   }
 
