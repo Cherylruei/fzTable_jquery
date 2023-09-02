@@ -45,15 +45,14 @@ $('.frzTable.rel').frzTable({
       header.addClass('listed');
       // 增加小飛機在被選取的 row
       // 抓到被點擊的 item 是該 column 的哪一排
-      const columns = $('.rel .content .column')
-      columns.on("click", ".item", function(){
-        const items = $(this).closest('.column').find('.item')
-        const index = items.index($(this))
-        const headers = $('.rel .first-col .header').not(".direction")
-       // 在相對應該排的 header 加上 listed
-       $(headers[index]).addClass('listed');
-      })
-
+      const columns = $('.rel .content .column');
+      columns.on('click', '.item', function () {
+        const items = $(this).closest('.column').find('.item');
+        const index = items.index($(this));
+        const headers = $('.rel .first-col .header').not('.direction');
+        // 在相對應該排的 header 加上 listed
+        $(headers[index]).addClass('listed');
+      });
     }
   },
 });

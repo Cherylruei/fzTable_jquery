@@ -123,7 +123,7 @@ h2 {
   flex-direction: row;
   justify-content: start;
   align-items: center;
-  width: 1000px;
+  max-width: 1000px;
   text-align: center;
   margin: 16px;
 }
@@ -131,6 +131,7 @@ h2 {
 .content {
   display: flex;
   position: relative;
+  flex-basis: 100%;
 }
 
 .column {
@@ -321,14 +322,15 @@ h2 {
 
 @media screen and (max-width: 980px) {
   .frzTable {
-    width: 100%;
     position: relative;
-    justify-content: start;
     overflow: hidden;
   }
 
+  /* .content {
+    flex-basis: 100%;
+  } */
   .column {
-    width: calc(100%/7)
+    width: calc(100% / 7);
   }
 
   .previous,
