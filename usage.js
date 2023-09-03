@@ -1,12 +1,11 @@
 // usage 使用 .frzTable custom plugin
 
 $('.frzTable.default').frzTable({
-  mode: 'default',
   count: {
     // M版時每次點擊往前往後移動幾格儲存格
     slide: 2, // [number]
     // M版時一個畫面show幾格儲存格
-    show: 3, // [number]
+    show: 4, // [number]
   },
   // 設定花多久時間移動完成
   speed: 0.3, // [number]
@@ -27,7 +26,6 @@ $('.frzTable.default').frzTable({
   },
 });
 $('.frzTable.rel').frzTable({
-  mode: 'rel',
   count: {
     slide: 2,
     show: 2,

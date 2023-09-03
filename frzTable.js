@@ -1,7 +1,7 @@
 (function ($) {
   const tableConfigs = {};
   $.fn.frzTable = function (options) {
-    const target = $(this);
+    const $table = $(this);
     const defaults = {
       // 此為預設參數: usage 的參數透過 options 覆蓋掉
       count: { slide: 1, show: 3 },
@@ -13,7 +13,6 @@
 
     // 計算表格滾動的位置
     let position = 0;
-    const $table = $(this);
 
     // whenClick 點擊效果 (options 的 whenClick 會覆蓋原有設定)
     function whenClick() {
@@ -29,7 +28,7 @@
       }
     });
 
-    // 每次 resize 都要去算箭頭出現的位置
+    // 每次 resize 都要重置箭頭是否出現、和position位置
     function resizeHandler() {
       if ($(window).width() <= 980) {
         resetPositionAndButtons();
@@ -51,10 +50,10 @@
       $table.children('.content').css({ right: 0 });
       position = 0;
     }
+
     $(window).on('resize', debounce(resizeHandler, 200));
 
     $(function () {
-      const slideNum = settings.count.slide;
       const length = $table.children('.content').children('.column').length;
       $table.children('.next').on('click', function () {
         if (position >= length) {
@@ -75,7 +74,6 @@
     tableConfigs[type] = options;
 
     function checkWidth() {
-      // position = 0;
       const tableColumns = {};
       const tableLengths = {};
       const type = $table.hasClass('default') ? 'default' : 'rel';
@@ -85,11 +83,32 @@
 
       if ($table.hasClass('default')) {
         const defaultSettings = tableConfigs[type];
-        adjustColumns(target, defaultSettings.count, tableColumns[type]);
+        adjustColumns($table, defaultSettings.count, tableColumns[type]);
       } else if ($table.hasClass('rel')) {
         const relSettings = tableConfigs[type];
-        adjustColumns(target, relSettings.count, tableColumns[type]);
+        adjustColumns($table, relSettings.count, tableColumns[type]);
       }
+    }
+
+    function adjustColumns($table, count, columns) {
+      // 現在螢幕寬度
+      const screenWidth = $(window).width();
+      // first-col width
+      const firtsCol = $table.find('.first-col').width();
+      // 需要顯示的欄位數量
+      const showCol = count.show;
+      // (螢幕寬度-首欄-left margin)/顯示欄位數=現在每一欄位的寬度
+      const columnWidth = (screenWidth - firtsCol - 32) / showCol;
+      const frzTableWidth = firtsCol + columnWidth * showCol;
+
+      $('.frzTable').width(frzTableWidth);
+      $(columns).width(columnWidth);
+
+      // 按照 adjustColumns 去調整 previous/next 出現的位置
+      $table.children('.previous').hide();
+      $table.children('.next').css({
+        left: `${firtsCol + columnWidth * showCol - 18}px`,
+      });
     }
 
     function checkBottomPosition(slide, showCol, length) {
@@ -152,27 +171,6 @@
       } else {
         $table.children('.previous').hide();
       }
-    }
-
-    function adjustColumns(target, count, columns) {
-      // 現在螢幕寬度
-      const screenWidth = $(window).width();
-      // first-col width
-      const firtsCol = target.find('.first-col').width();
-      // 需要顯示的欄位數量
-      const showCol = count.show;
-      // (螢幕寬度-首欄-left margin)/顯示欄位數=現在每一欄位的寬度
-      const columnWidth = (screenWidth - firtsCol - 32) / showCol;
-      const frzTableWidth = firtsCol + columnWidth * showCol;
-
-      $('.frzTable').width(frzTableWidth);
-      $(columns).width(columnWidth);
-
-      // 按照 adjustColumns 去調整 previous/next 出現的位置
-      $table.children('.previous').hide();
-      $table.children('.next').css({
-        left: `${firtsCol + columnWidth * showCol - 18}px`,
-      });
     }
 
     return this.each(function () {
